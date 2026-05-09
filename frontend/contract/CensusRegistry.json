@@ -1,0 +1,13 @@
+{
+  "address": "0x8F347f26b2Aa3C4fc9601648bd8346D33D42861c",
+  "abi": [
+    {"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"wallet","type":"address"},{"indexed":false,"internalType":"string","name":"country","type":"string"},{"indexed":false,"internalType":"string","name":"metricType","type":"string"}],"name":"CitizenRegistered","type":"event"},
+    {"inputs":[{"internalType":"string","name":"_country","type":"string"},{"internalType":"string","name":"_metricType","type":"string"}],"name":"registerCitizen","outputs":[],"stateMutability":"nonpayable","type":"function"},
+    {"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"citizenList","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
+    {"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"citizens","outputs":[{"internalType":"address","name":"wallet","type":"address"},{"internalType":"string","name":"country","type":"string"},{"internalType":"string","name":"metricType","type":"string"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"bool","name":"isActive","type":"bool"}],"stateMutability":"view","type":"function"},
+    {"inputs":[],"name":"getAllCitizens","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},
+    {"inputs":[{"internalType":"address","name":"_wallet","type":"address"}],"name":"getCitizen","outputs":[{"internalType":"string","name":"country","type":"string"},{"internalType":"string","name":"metricType","type":"string"},{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"bool","name":"isActive","type":"bool"}],"stateMutability":"view","type":"function"},
+    {"inputs":[],"name":"getTotalMembers","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+    {"inputs":[],"name":"totalMembers","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}
+  ]
+}
