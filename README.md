@@ -1,4 +1,4 @@
-# 🌐 Network State Census Dashboard
+# 🌐  Yearly Census Dashboard
 
 A decentralized census dashboard for a Network State — where citizens across the world can verify their identity using Zero Knowledge Proofs and get permanently recorded on the blockchain.
 
