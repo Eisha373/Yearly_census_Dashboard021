@@ -114,7 +114,10 @@ export default function CensusDashboard() {
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 
-      const tx = await contract.registerCitizen("Pakistan", "github-verified");
+const tx = await contract.registerCitizen("Pakistan", "github-verified", {
+  maxFeePerGas: ethers.parseUnits("50", "gwei"),
+  maxPriorityFeePerGas: ethers.parseUnits("30", "gwei"),
+});
       setProofStatus('registering');
       await tx.wait();
 
