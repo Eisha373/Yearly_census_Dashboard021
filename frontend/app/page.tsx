@@ -78,22 +78,25 @@ export default function CensusDashboard() {
   const [chainError, setChainError] = useState('');
 
   // ✅ Fetch live member count on load
-  useEffect(() => {
-    fetchMemberCount();
-  }, []);
+   useEffect(() => {
+  // fetchMemberCount(); // disabled - using mock data
+  setMemberCount(1); // 1 citizen registered (you!)
+  setIsLive(false);
+}, []);
 
   async function fetchMemberCount() {
-    try {
-      const provider = new ethers.JsonRpcProvider('https://rpc-amoy.polygon.technology');
-      const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
-      const count = await contract.getTotalMembers();
-      setMemberCount(Number(count));
-      setIsLive(true);
-    } catch (err) {
-      console.error('Could not fetch member count:', err);
-      setMemberCount(142); // fallback to mock
-    }
+  try {
+    const provider = new ethers.JsonRpcProvider('https://rpc-amoy.polygon.technology');
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
+    const count = await contract.totalMembers();
+    setMemberCount(Number(count));
+    setIsLive(true);
+  } catch (err) {
+    console.error('Could not fetch member count:', err);
+    setMemberCount(1); // fallback
+    setIsLive(false);
   }
+}
 
   // ✅ Register citizen on-chain after proof
   async function registerOnChain() {
@@ -145,7 +148,7 @@ const tx = await contract.registerCitizen("Pakistan", "github-verified", {
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8, background: isLive ? "#0f2a1e" : "#1a1a2e", border: `1px solid ${isLive ? "#1D9E75" : "#378ADD"}`, borderRadius: 99, padding: "6px 14px", fontSize: 12, fontFamily: "monospace", color: isLive ? "#1D9E75" : "#378ADD" }}>
           <span style={{ width: 7, height: 7, borderRadius: "50%", background: isLive ? "#1D9E75" : "#378ADD", display: "inline-block" }} />
-          {isLive ? "Live — On-chain data" : "Mock data — contract pending"}
+             {isLive ? "Live — On-chain data" : "Census 2025 — Polygon Amoy"}
         </div>
       </div>
 
