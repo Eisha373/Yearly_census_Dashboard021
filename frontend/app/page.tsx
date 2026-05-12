@@ -76,6 +76,8 @@ export default function CensusDashboard() {
   const [proofData, setProofData] = useState<unknown>(null);
   const [txHash, setTxHash] = useState('');
   const [chainError, setChainError] = useState('');
+  const [solanaWallet, setSolanaWallet] = useState<string>('');
+  const [solanaConnected, setSolanaConnected] = useState(false);
 
   // ✅ Fetch live member count on load
    useEffect(() => {
@@ -95,6 +97,21 @@ export default function CensusDashboard() {
     console.error('Could not fetch member count:', err);
     setMemberCount(1); // fallback
     setIsLive(false);
+  }
+}
+async function connectSolanaWallet() {
+  try {
+    const { solana } = window as any;
+    if (!solana) {
+      alert('Please install Phantom Wallet!');
+      window.open('https://phantom.app/', '_blank');
+      return;
+    }
+    const response = await solana.connect();
+    setSolanaWallet(response.publicKey.toString());
+    setSolanaConnected(true);
+  } catch (err) {
+    console.error('Solana wallet error:', err);
   }
 }
 
@@ -143,7 +160,8 @@ const tx = await contract.registerCitizen("Pakistan", "github-verified", {
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "2.5rem", flexWrap: "wrap", gap: "1rem" }}>
         <div>
           <div style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "#1D9E75", fontFamily: "monospace", marginBottom: 6 }}>Network State</div>
-          <h1 style={{ fontSize: 32, fontWeight: 700, margin: 0, letterSpacing: "-0.02em", color: "#f9fafb" }}>Yearly Census Dashboard</h1>
+          <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "#6b7280", fontFamily: "monospace", marginBottom: 4 }}>UNIVERSITY OF MANAGEMENT AND TECHNOLOGY</div>
+           <h1 style={{ fontSize: 32, fontWeight: 700, margin: 0, letterSpacing: "-0.02em", color: "#f9fafb" }}>Yearly Census Dashboard</h1>
           <p style={{ color: "#6b7280", marginTop: 6, fontSize: 14 }}>Verified citizen data — powered by ZK Proofs &amp; Blockchain</p>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 8, background: isLive ? "#0f2a1e" : "#1a1a2e", border: `1px solid ${isLive ? "#1D9E75" : "#378ADD"}`, borderRadius: 99, padding: "6px 14px", fontSize: 12, fontFamily: "monospace", color: isLive ? "#1D9E75" : "#378ADD" }}>
@@ -197,6 +215,29 @@ const tx = await contract.registerCitizen("Pakistan", "github-verified", {
           </div>
         </div>
       </div>
+      {/* Solana Wallet Section */}
+<div style={{ background: '#0f1117', border: '1px solid #1f2937', borderRadius: 16, padding: '1.5rem', marginTop: '1.5rem' }}>
+  <SectionTitle>Connect Solana Wallet</SectionTitle>
+  <p style={{ color: '#6b7280', fontSize: 14, marginBottom: '1rem' }}>
+    Connect your Phantom wallet to participate in census on Solana.
+  </p>
+  <button
+    onClick={connectSolanaWallet}
+    style={{ background: '#9945FF', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 20px', fontSize: 14, cursor: 'pointer', fontWeight: 600 }}
+  >
+    {solanaConnected ? '✅ Phantom Connected' : 'Connect Phantom Wallet'}
+  </button>
+  {solanaWallet && (
+    <div style={{ marginTop: '1rem', background: '#1a0533', border: '1px solid #9945FF', borderRadius: 12, padding: '1rem' }}>
+      <p style={{ color: '#9945FF', fontWeight: 600, fontSize: 14 }}>✅ Solana Wallet Connected!</p>
+      <p style={{ color: '#6b7280', fontSize: 12, marginTop: 4 }}>Address: {solanaWallet.slice(0,6)}...{solanaWallet.slice(-4)}</p>
+      <a href={`https://explorer.solana.com/address/${solanaWallet}?cluster=devnet`} target="_blank" rel="noreferrer"
+        style={{ color: '#9945FF', fontSize: 12, display: 'block', marginTop: 6 }}>
+        View on Solana Explorer →
+      </a>
+    </div>
+  )}
+</div>
 
       {/* Reclaim Proof Section */}
       <div style={{ background: '#0f1117', border: '1px solid #1f2937', borderRadius: 16, padding: '1.5rem', marginTop: '1.5rem' }}>
@@ -263,7 +304,7 @@ const tx = await contract.registerCitizen("Pakistan", "github-verified", {
 
       {/* Footer */}
       <div style={{ marginTop: "2.5rem", borderTop: "1px solid #1f2937", paddingTop: "1.5rem", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem", fontSize: 12, color: "#4b5563", fontFamily: "monospace" }}>
-        <span>Network State Census · Powered by Reclaim Protocol + Polygon</span>
+<span>Network State Census · Powered by Reclaim Protocol + Solana</span>
         <span>Census Cycle: 2025</span>
       </div>
 
